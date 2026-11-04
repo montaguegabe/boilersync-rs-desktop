@@ -766,6 +766,8 @@ mod tests {
         let names: Vec<&str> = repos.iter().map(|r| r.name.as_str()).collect();
         assert_eq!(names, ["api", "web"]);
         assert!(load_subrepos(tmp.path()).is_none());
-        assert_eq!(get_project_status(&project), RepoStatus::NoGit);
+        // With registered children, a root without git counts as clean and the
+        // children decide the status; here none of them is a repository yet.
+        assert_eq!(get_project_status(&project), RepoStatus::Clean);
     }
 }
