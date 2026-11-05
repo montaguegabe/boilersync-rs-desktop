@@ -270,23 +270,28 @@ fn worst_status(a: RepoStatus, b: RepoStatus) -> RepoStatus {
 
 /// Worst status across the project and its child projects. Missing/no-git
 /// children are ignored; with children, the root ignores untracked files so
-/// unrelated folders do not mark the whole project dirty.
+/// unrelated folders do not mark the whole project dirty. When neither the
+/// root nor any child is a repository there is nothing to be clean, so the
+/// project reports `NoGit` (or `Missing` when the folder itself is gone).
 pub fn get_project_status(project_path: &Path) -> RepoStatus {
     let Some(subrepos) = subrepo_payloads(project_path) else {
         return get_repo_status(project_path);
     };
-    let mut worst = git_status_internal(project_path, true);
-    if matches!(worst, RepoStatus::Missing | RepoStatus::NoGit) {
-        worst = RepoStatus::Clean;
+    if !project_path.exists() {
+        return RepoStatus::Missing;
     }
-    for repo in subrepos {
-        let status = git_status_internal(Path::new(&repo.path), false);
+    let root = git_status_internal(project_path, true);
+    let children = subrepos
+        .iter()
+        .map(|repo| git_status_internal(Path::new(&repo.path), false));
+    let mut worst = None;
+    for status in std::iter::once(root).chain(children) {
         if matches!(status, RepoStatus::Missing | RepoStatus::NoGit) {
             continue;
         }
-        worst = worst_status(worst, status);
+        worst = Some(worst.map_or(status, |w| worst_status(w, status)));
     }
-    worst
+    worst.unwrap_or(RepoStatus::NoGit)
 }
 
 pub fn get_project_last_commit_ms(project_path: &Path) -> Option<i64> {
@@ -766,8 +771,15 @@ mod tests {
         let names: Vec<&str> = repos.iter().map(|r| r.name.as_str()).collect();
         assert_eq!(names, ["api", "web"]);
         assert!(load_subrepos(tmp.path()).is_none());
-        // With registered children, a root without git counts as clean and the
-        // children decide the status; here none of them is a repository yet.
-        assert_eq!(get_project_status(&project), RepoStatus::Clean);
+        // With registered children the children decide the status; while none
+        // of them (nor the root) is a repository there is nothing to be clean.
+        assert_eq!(get_project_status(&project), RepoStatus::NoGit);
+        // Once one child is a repository, the root without git is ignored and
+        // that child's status is the project's.
+        boilersync_core::git::init_scratch_repo(&project.join("api")).unwrap();
+        boilersync_core::git::commit_all(&project.join("api"), "init").unwrap();
+        assert_eq!(get_project_status(&project), RepoStatus::OutOfSync);
+        std::fs::write(project.join("api/dirty.txt"), "x").unwrap();
+        assert_eq!(get_project_status(&project), RepoStatus::Dirty);
     }
 }
