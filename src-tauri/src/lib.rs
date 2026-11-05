@@ -1,4 +1,4 @@
-//! BoilerSync Desktop: a Tauri shell over `boilersync-core` for scaffolding
+//! Boilersync: a Tauri shell over `boilersync-core` for scaffolding
 //! projects from templates, reviewing and committing their changes (including
 //! registered child projects) and syncing them.
 

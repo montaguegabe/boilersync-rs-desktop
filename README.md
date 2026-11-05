@@ -1,6 +1,6 @@
 # boilersync-rs-desktop
 
-BoilerSync Desktop scaffolds projects from the templates in your local BoilerSync cache and keeps an eye on the projects you made: it lists them with their aggregate git status (a project and the child projects registered in its `.boilersync` count as one), shows a combined working-tree diff across them, lets you stage lines or files and commit per repo (optionally with AI-generated messages), pushes them all at once, and browses a cross-repo commit timeline.
+Boilersync scaffolds projects from the templates in your local Boilersync cache and keeps an eye on the projects you made: it lists them with their aggregate git status (a project and the child projects registered in its `.boilersync` count as one), shows a combined working-tree diff across them, lets you stage lines or files and commit per repo (optionally with AI-generated messages), pushes them all at once, and browses a cross-repo commit timeline.
 
 This is the Tauri 2 + React implementation that replaces the Electron `boilersync-desktop` app. The Rust side links `boilersync-core` from the sibling `boilersync-rs` checkout directly; nothing is spawned for template operations.
 

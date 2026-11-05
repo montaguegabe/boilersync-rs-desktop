@@ -167,7 +167,7 @@ export default function TemplateGenerator() {
         <div>
           <h1 className="text-xl font-semibold">Scaffold Project</h1>
           <p className="text-xs text-muted-foreground">
-            Choose a template, fill inputs, and generate with BoilerSync
+            Choose a template, fill inputs, and generate with Boilersync
           </p>
         </div>
         <div className="flex items-center gap-1">

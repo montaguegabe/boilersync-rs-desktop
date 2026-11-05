@@ -14,7 +14,7 @@ fi
 
 pnpm tauri build "${args[@]}"
 
-app_name="BoilerSync Desktop"
+app_name="Boilersync"
 built="src-tauri/target/$profile/bundle/macos/$app_name.app"
 target="/Applications/$app_name.app"
 

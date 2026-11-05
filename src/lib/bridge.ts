@@ -73,12 +73,12 @@ export const repoService = {
 };
 
 /** Native yes/no dialog (replaces `window.confirm`). */
-export function confirmDialog(text: string, title = 'BoilerSync Desktop'): Promise<boolean> {
+export function confirmDialog(text: string, title = 'Boilersync'): Promise<boolean> {
   return ask(text, { title, kind: 'warning' });
 }
 
 /** Native message dialog (replaces `window.alert`). */
-export async function alertDialog(text: string, title = 'BoilerSync Desktop'): Promise<void> {
+export async function alertDialog(text: string, title = 'Boilersync'): Promise<void> {
   await message(text, { title, kind: 'error' });
 }
 

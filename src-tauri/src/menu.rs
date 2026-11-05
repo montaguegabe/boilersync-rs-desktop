@@ -67,7 +67,7 @@ pub fn build_app_menu<R: Runtime>(app: &AppHandle<R>) -> tauri::Result<Menu<R>> 
     )?;
 
     #[cfg(target_os = "macos")]
-    let app_menu = SubmenuBuilder::new(app, "BoilerSync Desktop")
+    let app_menu = SubmenuBuilder::new(app, "Boilersync")
         .about(None)
         .separator()
         .services()
