@@ -1,6 +1,6 @@
 # boilersync-rs-desktop
 
-Tauri 2 + React desktop app for Boilersync. Private remake of the Electron `boilersync-desktop` repo, which is reference only and must never be pushed to from here.
+Tauri 2 + React desktop app for Boilersync. Remake of the Electron `boilersync-desktop` repo, which is reference only and must never be pushed to from here.
 
 - `src-tauri/` is a thin command layer: template operations call `boilersync-core` directly (path dependency on the sibling `boilersync-rs` checkout); project inspection lives in `src-tauri/src/inspect.rs` and treats the child projects registered in a `.boilersync` as the project's sub-repos; git writes shell out to `git`. Do not add libgit2 and do not spawn the `boilersync` CLI.
 - Keep `~/.openbase/boilersync-desktop/repos.json`, the shared `~/.openbase/coder-projects.json` and `~/.openbase/boilersync-desktop/settings.json` formats compatible with the Electron app.

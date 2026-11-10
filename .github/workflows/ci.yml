@@ -16,7 +16,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: montaguegabe/boilersync-rs
-          token: ${{ secrets.BOILERSYNC_RS_READ_TOKEN }}
           path: boilersync-rs
       - uses: dtolnay/rust-toolchain@stable
         with:
